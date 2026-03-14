@@ -27,14 +27,14 @@ def pedir_datos_reserva():
         
         return None
     
-def mostrar_reservas(lista_reservas, dia):
+def mostrar_reservas_dia(tree, lista_reservas):
 
-    print("\n--- Reservas del día", dia, "---")
+    # Tarea: Mostrar reservas del día
+    for item in tree.get_children():
+        tree.delete(item)
 
     if not lista_reservas:
-
-        print("No hay reservas para este día")
+        messagebox.showinfo("Consulta", "No hay reservas para este día")
 
     for r in lista_reservas:
-
-        print(r.persona, "| Sala:", r.id_sala, "| Horario:", r.hora_inicio, "-", r.hora_fin)
+        tree.insert("", "end", values=(r.hora_inicio, r.hora_fin, r.id_sala, r.persona))
