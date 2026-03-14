@@ -38,7 +38,7 @@ def solo_enteros(accion, valor_nuevo):
     return True
 
 
-def make_entry(parent, **kwargs):
+def entrada(parent, **kwargs):
     return tk.Entry(
         parent,
         bg=ENTRY_BG, fg=TEXT, insertbackground=TEXT,
@@ -51,7 +51,7 @@ def make_entry(parent, **kwargs):
     )
 
 
-def make_label(parent, text, **kwargs):
+def hacer_etiqueta(parent, text, **kwargs):
     return tk.Label(
         parent, text=text,
         bg=SURFACE, fg=SUBTEXT,
@@ -60,7 +60,7 @@ def make_label(parent, text, **kwargs):
     )
 
 
-def make_btn(parent, text, command, color=ACCENT, hover=ACCENT2, width=18):
+def hacer_btn(parent, text, command, color=ACCENT, hover=ACCENT2, width=18):
     btn = tk.Button(
         parent, text=text, command=command,
         bg=color, fg="white",
@@ -76,7 +76,7 @@ def make_btn(parent, text, command, color=ACCENT, hover=ACCENT2, width=18):
     return btn
 
 
-def card(parent, **kwargs):
+def tarjeta(parent, **kwargs):
     return tk.Frame(parent, bg=SURFACE, relief="flat", bd=0, **kwargs)
 
 
@@ -161,7 +161,7 @@ class App(tk.Tk):
         frame = tk.Frame(self.nb, bg=BG)
         self.nb.add(frame, text="  ➕  Nueva Reserva  ")
 
-        wrap = card(frame)
+        wrap = tarjeta(frame)
         wrap.pack(padx=40, pady=30, fill="both", expand=True)
 
         tk.Label(wrap, text="Crear nueva reserva",
@@ -171,7 +171,7 @@ class App(tk.Tk):
         vcmd = (self.register(solo_enteros), "%d", "%P")
 
         # ── Sala ──────────────────────────────────────────────────────────────
-        make_label(wrap, "Sala *").grid(row=1, column=0, sticky="w", padx=(24, 8), pady=6)
+        hacer_etiqueta(wrap, "Sala *").grid(row=1, column=0, sticky="w", padx=(24, 8), pady=6)
         self.cmb_sala = ttk.Combobox(
             wrap,
             values=[f"{s.id_sala} – {s.nombre}" for s in salas],
@@ -181,7 +181,7 @@ class App(tk.Tk):
         self.cmb_sala.current(0)
 
         # ── Día ───────────────────────────────────────────────────────────────
-        make_label(wrap, "Día *").grid(row=2, column=0, sticky="w", padx=(24, 8), pady=6)
+        hacer_etiqueta(wrap, "Día *").grid(row=2, column=0, sticky="w", padx=(24, 8), pady=6)
         if HAVE_CAL:
             self.ent_dia = DateEntry(
                 wrap, width=28, background=ACCENT, foreground="white",
@@ -189,26 +189,26 @@ class App(tk.Tk):
                 font=FONT_LABEL,
             )
         else:
-            self.ent_dia = make_entry(wrap, width=30)
+            self.ent_dia = entrada(wrap, width=30)
             self.ent_dia.insert(0, "YYYY-MM-DD")
         self.ent_dia.grid(row=2, column=1, sticky="w", padx=(0, 24), pady=6)
 
         # ── Horas ─────────────────────────────────────────────────────────────
-        make_label(wrap, "Hora inicio (0-23) *").grid(row=3, column=0, sticky="w", padx=(24, 8), pady=6)
-        self.ent_h_ini = make_entry(wrap, width=10, validate="key", validatecommand=vcmd)
+        hacer_etiqueta(wrap, "Hora inicio (0-23) *").grid(row=3, column=0, sticky="w", padx=(24, 8), pady=6)
+        self.ent_h_ini = entrada(wrap, width=10, validate="key", validatecommand=vcmd)
         self.ent_h_ini.grid(row=3, column=1, sticky="w", padx=(0, 24), pady=6, ipady=4)
 
-        make_label(wrap, "Hora fin (0-23) *").grid(row=4, column=0, sticky="w", padx=(24, 8), pady=6)
-        self.ent_h_fin = make_entry(wrap, width=10, validate="key", validatecommand=vcmd)
+        hacer_etiqueta(wrap, "Hora fin (0-23) *").grid(row=4, column=0, sticky="w", padx=(24, 8), pady=6)
+        self.ent_h_fin = entrada(wrap, width=10, validate="key", validatecommand=vcmd)
         self.ent_h_fin.grid(row=4, column=1, sticky="w", padx=(0, 24), pady=6, ipady=4)
 
         # ── Persona ───────────────────────────────────────────────────────────
-        make_label(wrap, "Nombre *").grid(row=5, column=0, sticky="w", padx=(24, 8), pady=6)
-        self.ent_persona = make_entry(wrap, width=32)
+        hacer_etiqueta(wrap, "Nombre *").grid(row=5, column=0, sticky="w", padx=(24, 8), pady=6)
+        self.ent_persona = entrada(wrap, width=32)
         self.ent_persona.grid(row=5, column=1, sticky="w", padx=(0, 24), pady=6, ipady=4)
 
         # ── Descripción ───────────────────────────────────────────────────────
-        make_label(wrap, "Descripción").grid(row=6, column=0, sticky="nw", padx=(24, 8), pady=6)
+        hacer_etiqueta(wrap, "Descripción").grid(row=6, column=0, sticky="nw", padx=(24, 8), pady=6)
         self.ent_desc = tk.Text(
             wrap, width=32, height=3,
             bg=ENTRY_BG, fg=TEXT, insertbackground=TEXT,
@@ -222,8 +222,8 @@ class App(tk.Tk):
         # ── Botón ─────────────────────────────────────────────────────────────
         btn_frame = tk.Frame(wrap, bg=SURFACE)
         btn_frame.grid(row=7, column=0, columnspan=2, pady=(16, 24))
-        make_btn(btn_frame, "✅  Crear Reserva", self._crear_reserva).pack(side="left", padx=8)
-        make_btn(btn_frame, "🗑  Limpiar", self._limpiar_form,
+        hacer_btn(btn_frame, "✅  Crear Reserva", self._crear_reserva).pack(side="left", padx=8)
+        hacer_btn(btn_frame, "🗑  Limpiar", self._limpiar_form,
                  color="#475569", hover="#64748B").pack(side="left", padx=8)
 
     # ── TAB 2: Ver Reservas ───────────────────────────────────────────────────
@@ -232,7 +232,7 @@ class App(tk.Tk):
         self.nb.add(frame, text="  📋  Ver Reservas  ")
 
         # Filtros
-        filter_card = card(frame)
+        filter_card = tarjeta(frame)
         filter_card.pack(fill="x", padx=40, pady=(20, 8))
 
         tk.Label(filter_card, text="Filtrar reservas",
@@ -250,18 +250,18 @@ class App(tk.Tk):
                 borderwidth=0, date_pattern="yyyy-mm-dd", font=FONT_LABEL,
             )
         else:
-            self.ent_filtro_dia = make_entry(row_f, width=18)
+            self.ent_filtro_dia = entrada(row_f, width=18)
             self.ent_filtro_dia.insert(0, "YYYY-MM-DD")
         self.ent_filtro_dia.pack(side="left", padx=8)
 
-        make_btn(row_f, "🔍  Buscar", self._buscar_reservas, width=14).pack(side="left", padx=4)
-        make_btn(row_f, "📋  Todas", self._ver_todas,
+        hacer_btn(row_f, "🔍  Buscar", self._buscar_reservas, width=14).pack(side="left", padx=4)
+        hacer_btn(row_f, "📋  Todas", self._ver_todas,
                  color="#475569", hover="#64748B", width=12).pack(side="left", padx=4)
-        make_btn(row_f, "🗑  Eliminar sel.", self._eliminar_seleccionada,
+        hacer_btn(row_f, "🗑  Eliminar sel.", self._eliminar_seleccionada,
                  color="#B91C1C", hover=DANGER, width=14).pack(side="right", padx=(0, 4))
 
         # Tabla
-        table_frame = card(frame)
+        table_frame = tarjeta(frame)
         table_frame.pack(fill="both", expand=True, padx=40, pady=(0, 20))
 
         cols = ("Sala", "Día", "Inicio", "Fin", "Persona", "Descripción")
