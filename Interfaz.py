@@ -28,16 +28,23 @@ def formulario_reserva(parent, callback_guardar):
     ent_fin = tk.Entry(frame)
     ent_fin.pack()
 
-    tk.Label(frame, text="Responsable:").pack()
-    ent_per = tk.Entry(frame)
-    ent_per.pack()
+        print("❌ Error: Los datos de ID y horas deben ser números")
+        
+        return None
+    
+def mostrar_reservas_dia(tree, lista_reservas):
 
-    tk.Label(frame, text="Descripción:").pack()
-    ent_des = tk.Entry(frame)
-    ent_des.pack()
+    # Tarea: Mostrar reservas del día
+    for item in tree.get_children():
+        tree.delete(item)
 
-    btn = tk.Button(frame, text="Guardar Reserva", 
-                    command=lambda: callback_guardar(ent_id.get(), ent_dia.get(), 
-                                                   ent_ini.get(), ent_fin.get(), 
-                                                   ent_per.get(), ent_des.get()))
-    btn.pack(pady=10)
+    if not lista_reservas:
+        messagebox.showinfo("Consulta", "No hay reservas para este día")
+
+    for r in lista_reservas:
+        tree.insert("", "end", values=(r.hora_inicio, r.hora_fin, r.id_sala, r.persona))
+
+def mostrar_error(mensaje):
+
+    # Tarea: Mostrar mensajes de error
+    messagebox.showerror("Error del Sistema", mensaje)
