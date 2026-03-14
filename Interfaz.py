@@ -1,32 +1,52 @@
-def mostrar_salas(lista_salas):
+import tkinter as tk
+from tkinter import messagebox
+from tkinter import ttk
 
-    print("\n--- Lista de salas ---")
+def mostrar_salas(tree, lista_salas):
+
+    # Tarea: Mostrar lista de salas
+    for item in tree.get_children():
+        tree.delete(item)
 
     for s in lista_salas:
+        tree.insert("", "end", values=(s.id_sala, s.nombre))
 
-        print("ID:", s.id_sala, "| Nombre:", s.nombre)
+def formulario_reserva(parent, callback_guardar):
 
-def pedir_datos_reserva():
+    # Tarea: Formulario para crear reserva
+    frame = tk.LabelFrame(parent, text=" Nueva Reserva ")
+    frame.pack(pady=10, padx=10, fill="x")
 
-    try:
+    tk.Label(frame, text="ID Sala:").pack()
+    ent_id = tk.Entry(frame)
+    ent_id.pack()
 
-        print("\n--- Datos de la reserva ---")
+    tk.Label(frame, text="Día:").pack()
+    ent_dia = tk.Entry(frame)
+    ent_dia.pack()
 
-        id_sala = int(input("ID sala: "))
-        dia = input("Día: ")
-        hora_inicio = int(input("Hora inicio: "))
-        hora_fin = int(input("Hora fin: "))
-        persona = input("Nombre: ")
-        descripcion = input("Descripción: ")
+    tk.Label(frame, text="Hora Inicio:").pack()
+    ent_ini = tk.Entry(frame)
+    ent_ini.pack()
 
-        return id_sala, dia, hora_inicio, hora_fin, persona, descripcion
+    tk.Label(frame, text="Hora Fin:").pack()
+    ent_fin = tk.Entry(frame)
+    ent_fin.pack()
 
-    except ValueError:
+    tk.Label(frame, text="Responsable:").pack()
+    ent_per = tk.Entry(frame)
+    ent_per.pack()
 
-        print("❌ Error: Los datos de ID y horas deben ser números")
-        
-        return None
-    
+    tk.Label(frame, text="Descripción:").pack()
+    ent_des = tk.Entry(frame)
+    ent_des.pack()
+
+    btn = tk.Button(frame, text="Guardar Reserva", 
+                    command=lambda: callback_guardar(ent_id.get(), ent_dia.get(), 
+                                                   ent_ini.get(), ent_fin.get(), 
+                                                   ent_per.get(), ent_des.get()))
+    btn.pack(pady=10)
+
 def mostrar_reservas_dia(tree, lista_reservas):
 
     # Tarea: Mostrar reservas del día
