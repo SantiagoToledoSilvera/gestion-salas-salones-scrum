@@ -26,3 +26,15 @@ def pedir_datos_reserva():
         print("❌ Error: Los datos de ID y horas deben ser números")
         
         return None
+    
+def mostrar_reservas(lista_reservas, dia):
+
+    print("\n--- Reservas del día", dia, "---")
+
+    if not lista_reservas:
+
+        print("No hay reservas para este día")
+
+    for r in lista_reservas:
+
+        print(r.persona, "| Sala:", r.id_sala, "| Horario:", r.hora_inicio, "-", r.hora_fin)
