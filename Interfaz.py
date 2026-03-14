@@ -38,3 +38,8 @@ def mostrar_reservas_dia(tree, lista_reservas):
 
     for r in lista_reservas:
         tree.insert("", "end", values=(r.hora_inicio, r.hora_fin, r.id_sala, r.persona))
+
+def mostrar_error(mensaje):
+
+    # Tarea: Mostrar mensajes de error
+    messagebox.showerror("Error del Sistema", mensaje)
