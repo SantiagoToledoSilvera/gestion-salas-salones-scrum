@@ -6,22 +6,27 @@ def mostrar_salas(lista_salas):
 
         print("ID:", s.id_sala, "| Nombre:", s.nombre)
 
-def pedir_datos_reserva():
+def formulario_reserva(parent, callback_guardar):
 
-    try:
+    # Tarea: Formulario para crear reserva
+    frame = tk.LabelFrame(parent, text=" Nueva Reserva ")
+    frame.pack(pady=10, padx=10, fill="x")
 
-        print("\n--- Datos de la reserva ---")
+    tk.Label(frame, text="ID Sala:").pack()
+    ent_id = tk.Entry(frame)
+    ent_id.pack()
 
-        id_sala = int(input("ID sala: "))
-        dia = input("Día: ")
-        hora_inicio = int(input("Hora inicio: "))
-        hora_fin = int(input("Hora fin: "))
-        persona = input("Nombre: ")
-        descripcion = input("Descripción: ")
+    tk.Label(frame, text="Día:").pack()
+    ent_dia = tk.Entry(frame)
+    ent_dia.pack()
 
-        return id_sala, dia, hora_inicio, hora_fin, persona, descripcion
+    tk.Label(frame, text="Hora Inicio:").pack()
+    ent_ini = tk.Entry(frame)
+    ent_ini.pack()
 
-    except ValueError:
+    tk.Label(frame, text="Hora Fin:").pack()
+    ent_fin = tk.Entry(frame)
+    ent_fin.pack()
 
         print("❌ Error: Los datos de ID y horas deben ser números")
         
