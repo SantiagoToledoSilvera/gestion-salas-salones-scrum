@@ -53,13 +53,5 @@ def mostrar_reservas_dia(tree, lista_reservas):
     for item in tree.get_children():
         tree.delete(item)
 
-    if not lista_reservas:
-        messagebox.showinfo("Consulta", "No hay reservas para este día")
-
-    for r in lista_reservas:
-        tree.insert("", "end", values=(r.hora_inicio, r.hora_fin, r.id_sala, r.persona))
-
-def mostrar_error(mensaje):
-
-    # Tarea: Mostrar mensajes de error
-    messagebox.showerror("Error del Sistema", mensaje)
+    for s in lista_salas:
+        tree.insert("", "end", values=(s.id_sala, s.nombre))
