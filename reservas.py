@@ -64,3 +64,18 @@ def crear_reserva(
     reservas.append(nueva)
 
     return True, "Reserva creada correctamente."
+
+def reservas_por_dia(dia: str) -> list:
+    return [r for r in reservas if r.dia == dia]
+
+
+def reservas_por_sala(id_sala: int) -> list:
+    return [r for r in reservas if r.id_sala == id_sala]
+
+
+def eliminar_reserva(index: int) -> tuple[bool, str]:
+    if 0 <= index < len(reservas):
+        reservas.pop(index)
+        return True, "Reserva eliminada correctamente."
+    return False, "Índice de reserva inválido."
+
