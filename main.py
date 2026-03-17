@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from data import salas, reservas
-from reservas import crear_reserva, eliminar_reserva
+from data import init_db                     
+from reservas import crear_reserva, eliminar_reserva, get_salas, get_all_reservas  # ← ACTUALIZADO
+
 
 # ─── CONFIGURACIÓN DE IDENTIDAD VISUAL ────────────────────────────────────────
 CLR_BG         = "#0D0D12"
@@ -15,6 +16,7 @@ CLR_TEXT_DIM   = "#94A3B8"
 class NexusApp(tk.Tk):
     def __init__(self):
         super().__init__()
+        init_db()                               # ← LLAMADA OBLIGATORIA AL INICIO
         self.title("Nexus Hub | Workspace Management")
         self.geometry("1100x850")
         self.configure(bg=CLR_BG)
@@ -82,7 +84,7 @@ class NexusApp(tk.Tk):
                  bg=CLR_BG, fg=CLR_TEXT).pack(anchor="w", pady=(0, 20))
         card = tk.Frame(self.view_port, bg=CLR_SURFACE, padx=30, pady=30)
         card.pack(fill="x")
-        tk.Label(card, text=f"Reservas activas: {len(reservas)}", 
+        tk.Label(card, text=f"Reservas activas: {len(get_all_reservas())}",   # ← CAMBIO
                  font=("Segoe UI", 14), bg=CLR_SURFACE, fg=CLR_ACCENT).pack(anchor="w")
 
     def _render_registro(self):
@@ -94,7 +96,9 @@ class NexusApp(tk.Tk):
 
         # Campos
         tk.Label(container, text="SALA", bg=CLR_SURFACE, fg=CLR_TEXT_DIM, font=("Segoe UI", 9, "bold")).pack(anchor="w")
-        self.cmb_sala = ttk.Combobox(container, values=[f"{s.id_sala} - {s.nombre}" for s in salas], state="readonly")
+        self.cmb_sala = ttk.Combobox(container, 
+                                     values=[f"{s.id_sala} - {s.nombre}" for s in get_salas()],  # ← CAMBIO
+                                     state="readonly")
         self.cmb_sala.pack(fill="x", pady=(5, 15))
         self.cmb_sala.current(0)
 
@@ -169,12 +173,23 @@ class NexusApp(tk.Tk):
         except ValueError:
             messagebox.showerror("Error", "Revisa que las horas sean números válidos.")
 
+
     def _handle_eliminar(self):
         selected = self.tree.selection()
         if not selected:
             messagebox.showwarning("Atención", "Por favor, selecciona una reserva de la lista.")
             return
             
+        reserva_id = int(selected[0])                            # ← ID real de la BD (iid)
+        confirm = messagebox.askyesno("Confirmar", "¿Estás seguro de eliminar esta reserva?")
+        
+        if confirm:
+            ok, msg = eliminar_reserva(reserva_id)               # ← ahora recibe ID
+            if ok:
+                messagebox.showinfo("Eliminado", msg)
+                self._refresh_table()
+            else:
+                messagebox.showerror("Error", msg)
         index = self.tree.index(selected[0])
         confirm = messagebox.askyesno("Confirmar", "¿Estás seguro de eliminar esta reserva?")
         
@@ -187,9 +202,11 @@ class NexusApp(tk.Tk):
                 messagebox.showerror("Error", msg)
 
     def _refresh_table(self):
-        for item in self.tree.get_children(): self.tree.delete(item)
-        for r in reservas:
-            self.tree.insert("", "end", values=(r.id_sala, r.dia, r.hora_inicio, r.hora_fin, r.persona, r.descripcion))
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+        for res_id, r in get_all_reservas():                     # ← NUEVO
+            self.tree.insert("", "end", iid=str(res_id),          # ← iid = ID de BD
+                             values=(r.id_sala, r.dia, r.hora_inicio, r.hora_fin, r.persona, r.descripcion))
 
 if __name__ == "__main__":
     NexusApp().mainloop()
