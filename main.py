@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from data import init_db                     
-from reservas import crear_reserva, eliminar_reserva, get_salas, get_all_reservas  # ← ACTUALIZADO
+from data import init_db
+from reservas import crear_reserva, eliminar_reserva, get_salas, get_all_reservas
+from Interfaz import confirmar_eliminacion
 
 
 # ─── CONFIGURACIÓN DE IDENTIDAD VISUAL ────────────────────────────────────────
@@ -179,27 +180,9 @@ class NexusApp(tk.Tk):
         if not selected:
             messagebox.showwarning("Atención", "Por favor, selecciona una reserva de la lista.")
             return
-            
-        reserva_id = int(selected[0])                            # ← ID real de la BD (iid)
-        confirm = messagebox.askyesno("Confirmar", "¿Estás seguro de eliminar esta reserva?")
-        
-        if confirm:
-            ok, msg = eliminar_reserva(reserva_id)               # ← ahora recibe ID
-            if ok:
-                messagebox.showinfo("Eliminado", msg)
-                self._refresh_table()
-            else:
-                messagebox.showerror("Error", msg)
-        index = self.tree.index(selected[0])
-        confirm = messagebox.askyesno("Confirmar", "¿Estás seguro de eliminar esta reserva?")
-        
-        if confirm:
-            ok, msg = eliminar_reserva(index)
-            if ok:
-                messagebox.showinfo("Eliminado", msg)
-                self._refresh_table()
-            else:
-                messagebox.showerror("Error", msg)
+
+        reserva_id = int(selected[0])  # ID real de la BD (iid)
+        confirmar_eliminacion(reserva_id, eliminar_reserva, self._refresh_table)
 
     def _refresh_table(self):
         for item in self.tree.get_children():

@@ -62,3 +62,14 @@ def mostrar_reservas_dia(tree, lista_reservas):
 def mostrar_error(mensaje):
     """Tarea: Mensajes de error visuales"""
     messagebox.showerror("Error del Sistema", mensaje)
+
+def confirmar_eliminacion(reserva_id, callback_eliminar, callback_refresh):
+    """Muestra diálogo de confirmación y ejecuta la eliminación usando el ID de BD."""
+    confirm = messagebox.askyesno("Confirmar", "¿Estás seguro de eliminar esta reserva?")
+    if confirm:
+        ok, msg = callback_eliminar(reserva_id)
+        if ok:
+            messagebox.showinfo("Eliminado", msg)
+            callback_refresh()
+        else:
+            messagebox.showerror("Error", msg)
