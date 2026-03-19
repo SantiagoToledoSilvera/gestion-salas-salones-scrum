@@ -125,3 +125,5 @@ Este proyecto está bajo la Licencia **MIT**. Consulta el archivo para más deta
 -----
 
 *Desarrollado con ❤️ para la gestión eficiente de espacios.*
+
+Video de programa: https://drive.google.com/file/d/1_Lfy7dOCfgk3dnOCY_jzoHJ_MTO5Zmpa/view?usp=sharing
